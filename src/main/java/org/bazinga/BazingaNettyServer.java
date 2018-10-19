@@ -1,7 +1,6 @@
 package org.bazinga;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -19,6 +18,11 @@ import org.slf4j.LoggerFactory;
 public class BazingaNettyServer {
 
     private final static Logger logger = LoggerFactory.getLogger(BazingaNettyServer.class);
+
+    static final String HOST = "127.0.0.1";
+
+    static final int PORT = 8082;
+
 
 
     public static void main(String[] args) {
@@ -39,8 +43,15 @@ public class BazingaNettyServer {
                     socketChannel.pipeline().addLast(new BazingaServerHandler());
                 }
             });
-            sbs.bind("127.0.0.1",8082).sync();
-            logger.info(">>>>>>>> BazingaNettyServer start success");
+            sbs.bind(HOST,PORT).sync().addListener(future -> {
+
+                if(future.isSuccess()){
+                    logger.info(">>>>>>>>>>>BazingaNettyServer bind {}:{} successfully",HOST,PORT);
+                }else{
+                    logger.error(">>>>>>>>>>>BazingaNettyServer bind {}:{} fail need reconnect",HOST,PORT);
+                }
+
+            });
         }catch (Exception e){
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();

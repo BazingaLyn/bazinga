@@ -1,7 +1,6 @@
 package org.bazinga;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
@@ -10,6 +9,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -19,6 +20,12 @@ import java.net.SocketAddress;
  * @create 2018-10-19 11:04
  **/
 public class BazingaNettyClient {
+
+    private final static Logger logger = LoggerFactory.getLogger(BazingaNettyClient.class);
+
+    static final String HOST = "127.0.0.1";
+
+    static final int PORT = 8082;
 
     public static void main(String[] args) {
 
@@ -36,10 +43,14 @@ public class BazingaNettyClient {
                     p.addLast(new BazingaClientHandler());
                 }
             });
-            SocketAddress socketAddress =  new InetSocketAddress("127.0.0.1", 8082);
-            ChannelFuture future = b.connect(socketAddress).sync();
-            future.channel().writeAndFlush("hello world");
-            future.channel().closeFuture().sync();
+            SocketAddress socketAddress =  new InetSocketAddress(HOST, PORT);
+            b.connect(socketAddress).sync().addListener(future -> {
+                if(future.isSuccess()){
+                    logger.info(">>>>>>>>>>>BazingaNettyClient connect {}:{} successfully",HOST,PORT);
+                }else{
+                    logger.error(">>>>>>>>>>>BazingaNettyClient connect {}:{} fail need reconnect",HOST,PORT);
+                }
+            });
         }catch (Exception e){
             group.shutdownGracefully();
         }
