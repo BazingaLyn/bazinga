@@ -19,20 +19,19 @@ public class BazingaNettyServer {
 
     private final static Logger logger = LoggerFactory.getLogger(BazingaNettyServer.class);
 
-    static final String HOST = "127.0.0.1";
-
-    static final int PORT = 8082;
-
-
-
     public static void main(String[] args) {
+        String host = "127.0.0.1";
+        int port = 8082;
+        bind(host,port);
+    }
 
+    private static void bind(String host,int port) {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
-        try{
+        try {
             ServerBootstrap sbs = new ServerBootstrap();
-            sbs.group(bossGroup,workerGroup);
+            sbs.group(bossGroup, workerGroup);
             sbs.channel(NioServerSocketChannel.class);
             sbs.childHandler(new ChannelInitializer<SocketChannel>() {
 
@@ -43,20 +42,17 @@ public class BazingaNettyServer {
                     socketChannel.pipeline().addLast(new BazingaServerHandler());
                 }
             });
-            sbs.bind(HOST,PORT).sync().addListener(future -> {
-
-                if(future.isSuccess()){
-                    logger.info(">>>>>>>>>>>BazingaNettyServer bind {}:{} successfully",HOST,PORT);
-                }else{
-                    logger.error(">>>>>>>>>>>BazingaNettyServer bind {}:{} fail need reconnect",HOST,PORT);
+            sbs.bind(host, port).sync().addListener(future -> {
+                if (future.isSuccess()) {
+                    logger.info(">>>>>>>>>>>BazingaNettyServer bind {}:{} successfully", host, port);
+                } else {
+                    logger.error(">>>>>>>>>>>BazingaNettyServer bind {}:{} fail need reconnect", host, port);
                 }
 
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
-
-
     }
 }

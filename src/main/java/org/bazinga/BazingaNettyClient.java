@@ -28,7 +28,10 @@ public class BazingaNettyClient {
     static final int PORT = 8082;
 
     public static void main(String[] args) {
+        connect();
+    }
 
+    private static void connect() {
         EventLoopGroup group = new NioEventLoopGroup();
         Bootstrap b = new Bootstrap();
         try{
@@ -54,6 +57,5 @@ public class BazingaNettyClient {
         }catch (Exception e){
             group.shutdownGracefully();
         }
-
     }
 }
