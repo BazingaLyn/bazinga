@@ -2,6 +2,7 @@ package org.bazinga;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -48,11 +49,12 @@ public class BazingaNettyServer {
 
                 @Override
                 protected void initChannel(SocketChannel socketChannel) throws Exception {
-                    socketChannel.pipeline().addLast(new IdleStateHandler(READ_IDEL_TIME_OUT,
+                    ChannelPipeline pipeline = socketChannel.pipeline();
+                    pipeline.addLast(new IdleStateHandler(READ_IDEL_TIME_OUT,
                             WRITE_IDEL_TIME_OUT, ALL_IDEL_TIME_OUT, TimeUnit.SECONDS));
-                    socketChannel.pipeline().addLast("decoder", new StringDecoder());
-                    socketChannel.pipeline().addLast("encoder", new StringEncoder());
-                    socketChannel.pipeline().addLast(new BazingaServerHandler());
+                    pipeline.addLast("decoder", new StringDecoder());
+                    pipeline.addLast("encoder", new StringEncoder());
+                    pipeline.addLast(new BazingaServerHandler());
                 }
             });
             sbs.bind(host, port).sync().addListener(future -> {

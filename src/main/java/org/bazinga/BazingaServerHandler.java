@@ -16,6 +16,8 @@ public class BazingaServerHandler extends ChannelInboundHandlerAdapter {
 
     private Logger logger = LoggerFactory.getLogger(BazingaServerHandler.class);
 
+    private String HEART_MSG = "heartbeats";
+
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
@@ -39,7 +41,13 @@ public class BazingaServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         logger.info("from remote ip {} receive msg {}",ctx.channel().remoteAddress().toString(),msg);
-//        int  i = 2 / 0;
+        if(msg instanceof String){
+            String _msg = (String)msg;
+            if(HEART_MSG.equals(_msg)){
+                logger.info("心跳数据不需要回复");
+                return;
+            }
+        }
         ctx.pipeline().writeAndFlush(msg);
     }
 
