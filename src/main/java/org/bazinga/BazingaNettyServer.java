@@ -1,6 +1,7 @@
 package org.bazinga;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -8,6 +9,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author liguolin
@@ -15,6 +18,7 @@ import io.netty.handler.codec.string.StringEncoder;
  **/
 public class BazingaNettyServer {
 
+    private final static Logger logger = LoggerFactory.getLogger(BazingaNettyServer.class);
 
 
     public static void main(String[] args) {
@@ -32,12 +36,14 @@ public class BazingaNettyServer {
                 protected void initChannel(SocketChannel socketChannel) throws Exception {
                     socketChannel.pipeline().addLast("decoder", new StringDecoder());
                     socketChannel.pipeline().addLast("encoder", new StringEncoder());
-//                    socketChannel.pipeline().addLast(new HelloWorldServerHandler());
+                    socketChannel.pipeline().addLast(new BazingaServerHandler());
                 }
             });
-
+            sbs.bind("127.0.0.1",8082).sync();
+            logger.info(">>>>>>>> BazingaNettyServer start success");
         }catch (Exception e){
-
+            bossGroup.shutdownGracefully();
+            workerGroup.shutdownGracefully();
         }
 
 
