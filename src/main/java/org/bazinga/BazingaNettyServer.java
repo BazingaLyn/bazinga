@@ -7,6 +7,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.FixedLengthFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ public class BazingaNettyServer {
 
     private final static Logger logger = LoggerFactory.getLogger(BazingaNettyServer.class);
 
+    private static int default_fixed_length = "hello world my name is lyncc".getBytes().length;
 
 
     public static void main(String[] args) {
@@ -41,6 +43,7 @@ public class BazingaNettyServer {
                 @Override
                 protected void initChannel(SocketChannel socketChannel) throws Exception {
                     ChannelPipeline pipeline = socketChannel.pipeline();
+                    pipeline.addLast("fixedLengthFrameDecoder", new FixedLengthFrameDecoder(default_fixed_length));
                     pipeline.addLast("decoder", new StringDecoder());
                     pipeline.addLast("encoder", new StringEncoder());
                     pipeline.addLast(new BazingaServerHandler());
