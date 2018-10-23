@@ -44,8 +44,7 @@ public class BazingaNettyClient {
                 @Override
                 public void initChannel(SocketChannel ch) throws Exception {
                     ChannelPipeline p = ch.pipeline();
-                    p.addLast(new StringDecoder());
-                    p.addLast(new StringEncoder());
+                    p.addLast(new SimpleMsgToByteEncoder());
                     p.addLast(new BazingaClientHandler());
                 }
             });
