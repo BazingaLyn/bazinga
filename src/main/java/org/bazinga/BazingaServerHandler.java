@@ -16,39 +16,12 @@ public class BazingaServerHandler extends ChannelInboundHandlerAdapter {
 
     private Logger logger = LoggerFactory.getLogger(BazingaServerHandler.class);
 
-    private String HEART_MSG = "heartbeats";
-
-
-    @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof IdleStateEvent) {
-            IdleStateEvent event = (IdleStateEvent) evt;
-            if (event.state() == IdleState.READER_IDLE) {
-                logger.info("5秒没有接收到客户端的信息了");
-            }
-        } else {
-            super.userEventTriggered(ctx, evt);
-        }
-    }
-
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        logger.info(">>>>>>>>>>>> BazingaServerHandler channelActive");
-        super.channelActive(ctx);
-    }
-
+    private int count = 0;
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        logger.info("from remote ip {} receive msg {}",ctx.channel().remoteAddress().toString(),msg);
-        if(msg instanceof String){
-            String _msg = (String)msg;
-            if(HEART_MSG.equals(_msg)){
-                logger.info("心跳数据不需要回复");
-                return;
-            }
-        }
-        ctx.pipeline().writeAndFlush(msg);
+        logger.info("from remote ip {} receive msg {} receive count is {}",ctx.channel().remoteAddress().toString(),msg,++count);
+
     }
 
     @Override

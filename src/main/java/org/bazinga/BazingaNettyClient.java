@@ -2,6 +2,7 @@ package org.bazinga;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -29,13 +30,6 @@ public class BazingaNettyClient {
 
     static final int PORT = 8082;
 
-    // 读超时
-    private static final int READ_IDEL_TIME_OUT         = 0;
-    // 写超时
-    private static final int WRITE_IDEL_TIME_OUT        = 4;
-    // 所有超时
-    private static final int ALL_IDEL_TIME_OUT          = 0;
-
     public static void main(String[] args) {
         connect();
     }
@@ -44,14 +38,11 @@ public class BazingaNettyClient {
         EventLoopGroup group = new NioEventLoopGroup();
         Bootstrap b = new Bootstrap();
         try{
-
             b.group(group)
                     .channel(NioSocketChannel.class).handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 public void initChannel(SocketChannel ch) throws Exception {
                     ChannelPipeline p = ch.pipeline();
-                    p.addLast(new IdleStateHandler(READ_IDEL_TIME_OUT,
-                            WRITE_IDEL_TIME_OUT, ALL_IDEL_TIME_OUT, TimeUnit.SECONDS));
                     p.addLast(new StringDecoder());
                     p.addLast(new StringEncoder());
                     p.addLast(new BazingaClientHandler());
