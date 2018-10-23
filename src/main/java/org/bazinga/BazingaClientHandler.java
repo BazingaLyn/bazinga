@@ -17,17 +17,9 @@ public class BazingaClientHandler extends ChannelInboundHandlerAdapter {
 
 
 
-    private String too_long_context = "TCP将保持它首部和数据的检验和。这是一个端到端的检验和，目的是检测数据在传输过程中的任何变化。如果收到段的检验和有差错，TCP将丢弃这个报文段和不确认收到此报文段。 (校验出包有错，丢弃报文段，不给出响应，TCP发送数据端，超时时会重发数据)\n" +
-            "5、既然TCP报文段作为IP数据报来传输，而IP数据报的到达可能会失序，因此TCP报文段的到达也可能会失序。如果必要，TCP将对收到的数据进行重新排序，将收到的数据以正确的顺序交给应用层。 (对失序数据进行重新排序，然后才交给应用层)\n" +
-            "6、既然IP数据报会发生重复，TCP的接收端必须丢弃重复的数据。(对于重复数据，能够丢弃重复数据)\n" +
-            "7、TCP还能提供流量控制。TCP连接的每一方都有固定大小的缓冲空间。TCP的接收端只允许另一端发送接收端缓冲区所能接纳的数据。这将防止较快主机致使较慢主机的缓冲区溢出。(TCP可以进行流量控制，防止较快主机致使较慢主机的缓冲区溢出)TCP使用的流量控制协议是可变大小的滑动窗口协议。\n" +
-            "字节流服务::两个应用程序通过TCP连接交换8bit字节构成的字节流。TCP不在字节流中插入记录标识符。我们将这称为字节流服务（bytestreamservice）。\n" +
-            "TCP对字节流的内容不作任何解释:: TCP对字节流的内容不作任何解释。TCP不知道传输的数据字节流是二进制数据，还是ASCII字符、EBCDIC字符或者其他类型数据。对字节流的解释由TCP连接双方的应用层解释。\n" +
-            "--------------------- \n" +
-            "作者：北方的忍冬草 \n" +
-            "来源：CSDN \n" +
-            "原文：https://blog.csdn.net/dccmxj/article/details/52103800 \n" +
-            "版权声明：本文为博主原创文章，转载请附上博文链接！";
+    private String too_long_context = "Iron Man is a 2008 American superhero film based on the Marvel Comics character of the same name, produced by Marvel Studios and distributed by Paramount Pictures.[N 1] It is the first film in the Marvel Cinematic Universe (MCU). The film was directed by Jon Favreau, with a screenplay by the writing teams of Mark Fergus and Hawk Ostby and Art Marcum and Matt Holloway. It stars Robert Downey Jr. as Tony Stark / Iron Man, alongside Terrence Howard, Jeff Bridges, Shaun Toub, and Gwyneth Paltrow. In Iron Man, Tony Stark, an industrialist and master engineer, builds a powered exoskeleton after a life-threatening incident and becomes the technologically advanced superhero Iron Man.\n" +
+            "The film had been in development since 1990 at Universal Pictures, 20th Century Fox, or New Line Cinema at various times, before Marvel Studios reacquired the rights in 2006. Marvel put the project in production as its first self-financed film, with Paramount Pictures as its distributor. Favreau signed on as director, aiming for a naturalistic feel, and he chose to shoot the film primarily in California, rejecting the East Coast setting of the comics to differentiate the film from numerous superhero films set in New York City-esque environments. Filming began in March 2007 and concluded in June. During filming, the actors were free to create their own dialogue because pre-production was focused on the story and action. Rubber and metal versions of the armors, created by Stan Winston's company, were mixed with computer-generated imagery to create the title character.\n" +
+            "Iron Man premiered in Sydney on April 14, 2008, and was released in the United States on May 2, 2008. The film grossed over $585 million on a $140 million budget, and received praise for its acting, particularly Downey's performance as Tony Stark, as well as the visual effects and action sequences. The American Film Institute selected the film as one of the ten best of the year. It was also nominated for two Academy Awards for Best Sound Editing and Best Visual Effects. Two sequels, Iron Man 2 and Iron Man 3, were released on May 7, 2010, and May 3, 2013, respectively.";
 
 
 

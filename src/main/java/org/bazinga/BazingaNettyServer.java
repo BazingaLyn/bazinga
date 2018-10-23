@@ -12,6 +12,8 @@ import io.netty.handler.codec.string.StringEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.charset.Charset;
+
 /**
  * @author liguolin
  * @create 2018-10-18 20:40
