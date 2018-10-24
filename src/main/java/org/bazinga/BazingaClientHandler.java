@@ -21,7 +21,8 @@ public class BazingaClientHandler extends ChannelInboundHandlerAdapter {
         logger.info(">>>>>> BazingaClientHandler channelActive");
 
         // 粘包
-        for(int i = 0; i< 100 ;i++){
+        for(int i = 0; i< 10 ;i++){
+
             ctx.pipeline().writeAndFlush("hello world my name is lyncc");
         }
     }
