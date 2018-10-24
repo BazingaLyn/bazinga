@@ -16,10 +16,6 @@ public class BazingaClientHandler extends ChannelInboundHandlerAdapter {
     private Logger logger = LoggerFactory.getLogger(BazingaClientHandler.class);
 
 
-
-
-
-
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         logger.info(">>>>>> BazingaClientHandler channelActive");
