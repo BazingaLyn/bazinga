@@ -17,6 +17,22 @@ public class BazingaClientHandler extends ChannelInboundHandlerAdapter {
 
 
     private String HEART_MSG = "heartbeats";
+
+    private int sample_count = 0;
+
+    private NettyConnector nettyConnector;
+
+    private String host;
+
+    private int port;
+
+    public BazingaClientHandler(NettyConnector nettyConnector,String host,int port) {
+        this.nettyConnector = nettyConnector;
+        this.host = host;
+        this.port = port;
+    }
+
+
     /**
      *
      * @param ctx
@@ -29,7 +45,13 @@ public class BazingaClientHandler extends ChannelInboundHandlerAdapter {
             IdleStateEvent event = (IdleStateEvent) evt;
             if (event.state() == IdleState.WRITER_IDLE) {
                 logger.info(">>>>> 我们已经4秒没有发送数据给服务器了，为了防止服务器以为我们死了，我们需要发送一个心跳数据");
-                ctx.pipeline().writeAndFlush(HEART_MSG);
+                ++sample_count;
+                if(sample_count < 4){
+                    ctx.pipeline().writeAndFlush(HEART_MSG);
+                }else{
+                    logger.info(">>>> 模拟假死 不再发送心跳");
+                }
+
             }
         } else {
             super.userEventTriggered(ctx, evt);
@@ -40,6 +62,13 @@ public class BazingaClientHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         logger.info(">>>>>> BazingaClientHandler channelActive");
         ctx.pipeline().writeAndFlush("hello world");
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        logger.info(">>>>>> BazingaClientHandler channelInactive");
+        logger.info(">>>>>>>> channelInactive ready reconnect 在channelInactive时候准备重连");
+        nettyConnector.connect(host,port);
     }
 
     @Override
