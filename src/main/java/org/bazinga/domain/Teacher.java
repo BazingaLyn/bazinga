@@ -14,6 +14,12 @@ public class Teacher {
 
     private String course;
 
+    public Teacher(int id, String name, String course) {
+        this.id = id;
+        this.name = name;
+        this.course = course;
+    }
+
     public int getId() {
         return id;
     }
@@ -36,5 +42,14 @@ public class Teacher {
 
     public void setCourse(String course) {
         this.course = course;
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", course='" + course + '\'' +
+                '}';
     }
 }

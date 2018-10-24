@@ -4,6 +4,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import org.bazinga.domain.Student;
+import org.bazinga.domain.Teacher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,10 +22,10 @@ public class BazingaClientHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         logger.info(">>>>>> BazingaClientHandler channelActive");
 
-        // 粘包
-        for(int i = 0; i< 10 ;i++){
+        for (int i = 0; i < 10; i++) {
 
-            ctx.pipeline().writeAndFlush("hello world my name is lyncc");
+            ctx.pipeline().writeAndFlush(new Teacher(i,"Lyncc"+i,"english"));
+            ctx.pipeline().writeAndFlush(new Student("student Lyncc"+i,"sleep",90+i));
         }
     }
 

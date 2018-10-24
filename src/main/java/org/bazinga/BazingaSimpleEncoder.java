@@ -14,11 +14,9 @@ public class BazingaSimpleEncoder extends MessageToByteEncoder<Object> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
-        if(msg instanceof Student){
-            byte[] infos = JSON.toJSONString(msg).getBytes();
-            out.writeByte((byte)1);
-            out.writeInt(infos.length);
-
-        }
+        out.writeByte(msg instanceof Student ? (byte)1 : (byte)2);
+        byte[] infos = JSON.toJSONString(msg).getBytes();
+        out.writeInt(infos.length);
+        out.writeBytes(infos);
     }
 }

@@ -12,9 +12,15 @@ public class Student{
 
     private String name;
 
-    private List<String> interests;
+    private String interest;
 
     private int score;
+
+    public Student(String name, String interest, int score) {
+        this.name = name;
+        this.interest = interest;
+        this.score = score;
+    }
 
     public String getName() {
         return name;
@@ -24,12 +30,12 @@ public class Student{
         this.name = name;
     }
 
-    public List<String> getInterests() {
-        return interests;
+    public String getInterest() {
+        return interest;
     }
 
-    public void setInterests(List<String> interests) {
-        this.interests = interests;
+    public void setInterest(String interest) {
+        this.interest = interest;
     }
 
     public int getScore() {
@@ -38,5 +44,14 @@ public class Student{
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", interests=" + interest +
+                ", score=" + score +
+                '}';
     }
 }

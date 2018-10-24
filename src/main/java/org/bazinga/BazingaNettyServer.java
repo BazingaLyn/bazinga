@@ -43,9 +43,7 @@ public class BazingaNettyServer {
                 @Override
                 protected void initChannel(SocketChannel socketChannel) throws Exception {
                     ChannelPipeline pipeline = socketChannel.pipeline();
-                    pipeline.addLast("fixedLengthFrameDecoder", new FixedLengthFrameDecoder(default_fixed_length));
-                    pipeline.addLast("decoder", new StringDecoder());
-                    pipeline.addLast("encoder", new StringEncoder());
+                    pipeline.addLast("bazingaSimpleEncoder", new BazingaSimpleDecoder());
                     pipeline.addLast(new BazingaServerHandler());
                 }
             });
