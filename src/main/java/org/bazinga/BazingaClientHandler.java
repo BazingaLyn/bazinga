@@ -19,7 +19,7 @@ public class BazingaClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         logger.info(">>>>>> BazingaClientHandler channelActive");
-        for(int i = 0;i< 100;i++){
+        for(int i = 0;i< 10000;i++){
             ctx.pipeline().writeAndFlush("hello world "+i);
         }
 
