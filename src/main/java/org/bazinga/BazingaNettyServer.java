@@ -45,7 +45,5 @@ public class BazingaNettyServer {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
-
-
     }
 }

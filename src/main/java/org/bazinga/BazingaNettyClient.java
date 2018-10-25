@@ -1,15 +1,14 @@
 package org.bazinga;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -20,13 +19,17 @@ import java.net.SocketAddress;
  **/
 public class BazingaNettyClient {
 
+    private static Logger logger = LoggerFactory.getLogger(BazingaNettyClient.class);
+
     public static void main(String[] args) {
 
+        int sendInfo = "hello world...".getBytes().length;
+
         EventLoopGroup group = new NioEventLoopGroup();
-        Bootstrap b = new Bootstrap();
+        Bootstrap boot = new Bootstrap();
         try{
 
-            b.group(group)
+            boot.group(group)
                     .channel(NioSocketChannel.class).handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 public void initChannel(SocketChannel ch) throws Exception {
@@ -36,9 +39,32 @@ public class BazingaNettyClient {
                     p.addLast(new BazingaClientHandler());
                 }
             });
+
+            WriteBufferWaterMark waterMark = new WriteBufferWaterMark(300, 400);
+            boot.option(ChannelOption.WRITE_BUFFER_WATER_MARK, waterMark);
+
             SocketAddress socketAddress =  new InetSocketAddress("127.0.0.1", 8082);
-            ChannelFuture future = b.connect(socketAddress).sync();
-            future.channel().writeAndFlush("hello world");
+            ChannelFuture future = boot.connect(socketAddress).sync();
+            Channel channel = future.channel();
+            channel.writeAndFlush("hello world...");
+            int totalHasSendInfos = 0;
+
+//            for(int i = 0;i <100;i++){
+//
+//                if(totalHasSendInfos == 112){
+//                    System.out.println("hello world");
+//                }
+//                if(channel.isWritable()){
+//                    totalHasSendInfos +=sendInfo;
+//
+//                    logger.info("can write and flush and has sent {} bytes",totalHasSendInfos);
+//                    channel.write("hello world...");
+//                }else{
+//                    logger.info("channel can't be writable");
+//                }
+//            }
+//            channel.flush();
+
             future.channel().closeFuture().sync();
         }catch (Exception e){
             group.shutdownGracefully();
