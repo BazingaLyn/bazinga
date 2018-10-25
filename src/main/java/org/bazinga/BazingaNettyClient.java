@@ -1,10 +1,7 @@
 package org.bazinga;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -28,9 +25,18 @@ public class BazingaNettyClient {
 
 
     public static void main(String[] args) {
+
         logger.info("ready connect to server");
+
+        Channel channel = null;
+
         NettyConnector nettyConnector = new NettyConnector();
-        nettyConnector.connect("127.0.0.1",8082);
+        try {
+            nettyConnector.connect("127.0.0.1",8082);
+        } catch (Exception e) {
+        }
+
+
     }
 
 }

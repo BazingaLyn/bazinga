@@ -4,6 +4,9 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.util.Attribute;
+import io.netty.util.AttributeKey;
+import org.bazinga.domain.Url;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,23 +18,15 @@ public class BazingaClientHandler extends ChannelInboundHandlerAdapter {
 
     private Logger logger = LoggerFactory.getLogger(BazingaClientHandler.class);
 
-
     private String HEART_MSG = "heartbeats";
 
     private int sample_count = 0;
 
-    private NettyConnector nettyConnector;
+    private ReconnectManager reconnectManager;
 
-    private String host;
-
-    private int port;
-
-    public BazingaClientHandler(NettyConnector nettyConnector,String host,int port) {
-        this.nettyConnector = nettyConnector;
-        this.host = host;
-        this.port = port;
+    public BazingaClientHandler(ReconnectManager reconnectManager) {
+        this.reconnectManager = reconnectManager;
     }
-
 
     /**
      *
@@ -68,7 +63,13 @@ public class BazingaClientHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         logger.info(">>>>>> BazingaClientHandler channelInactive");
         logger.info(">>>>>>>> channelInactive ready reconnect 在channelInactive时候准备重连");
-        nettyConnector.connect(host,port);
+
+        Attribute<Url> attribute = ctx.channel().attr(AttributeKey.valueOf("heartbeatCount"));
+        Url url = attribute.get();
+        if(url != null){
+            logger.info(">>>>>> BazingaClientHandler 准备重连的URL is {}",url);
+            reconnectManager.addReconnectTask(url);
+        }
     }
 
     @Override
