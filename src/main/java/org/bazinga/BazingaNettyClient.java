@@ -21,10 +21,18 @@ public class BazingaNettyClient {
 
     private static Logger logger = LoggerFactory.getLogger(BazingaNettyClient.class);
 
+    private static BazingaSharableHandler bazingaSharableHandler = new BazingaSharableHandler();
+
     public static void main(String[] args) {
 
-        int sendInfo = "hello world...".getBytes().length;
+        for(int i = 0;i < 2;i++){
+            logger.info("hello");
+            connection("127.0.0.1",8082);
+        }
+    }
 
+
+    public static void connection(String host,int port){
         EventLoopGroup group = new NioEventLoopGroup();
         Bootstrap boot = new Bootstrap();
         try{
@@ -36,6 +44,7 @@ public class BazingaNettyClient {
                     ChannelPipeline p = ch.pipeline();
                     p.addLast(new StringDecoder());
                     p.addLast(new StringEncoder());
+                    p.addLast(bazingaSharableHandler);
                     p.addLast(new BazingaClientHandler());
                 }
             });
@@ -43,32 +52,12 @@ public class BazingaNettyClient {
             WriteBufferWaterMark waterMark = new WriteBufferWaterMark(300, 400);
             boot.option(ChannelOption.WRITE_BUFFER_WATER_MARK, waterMark);
 
-            SocketAddress socketAddress =  new InetSocketAddress("127.0.0.1", 8082);
+            SocketAddress socketAddress =  new InetSocketAddress(host, port);
             ChannelFuture future = boot.connect(socketAddress).sync();
             Channel channel = future.channel();
             channel.writeAndFlush("hello world...");
-            int totalHasSendInfos = 0;
-
-//            for(int i = 0;i <100;i++){
-//
-//                if(totalHasSendInfos == 112){
-//                    System.out.println("hello world");
-//                }
-//                if(channel.isWritable()){
-//                    totalHasSendInfos +=sendInfo;
-//
-//                    logger.info("can write and flush and has sent {} bytes",totalHasSendInfos);
-//                    channel.write("hello world...");
-//                }else{
-//                    logger.info("channel can't be writable");
-//                }
-//            }
-//            channel.flush();
-
-            future.channel().closeFuture().sync();
         }catch (Exception e){
             group.shutdownGracefully();
         }
-
     }
 }
