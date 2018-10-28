@@ -1,7 +1,6 @@
 package org.bazinga;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -13,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author liguolin
+ * @author bazinga
  * @create 2018-10-18 20:40
  **/
 public class BazingaNettyServer {

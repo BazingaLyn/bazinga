@@ -15,7 +15,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 /**
- * @author liguolin
+ * @author bazinga
  * @create 2018-10-19 11:04
  **/
 public class BazingaNettyClient {
@@ -38,7 +38,7 @@ public class BazingaNettyClient {
             });
             SocketAddress socketAddress =  new InetSocketAddress("127.0.0.1", 8082);
             ChannelFuture future = b.connect(socketAddress).sync();
-            future.channel().writeAndFlush("hello world");
+            future.channel().writeAndFlush("Hello Netty");
             future.channel().closeFuture().sync();
         }catch (Exception e){
             group.shutdownGracefully();

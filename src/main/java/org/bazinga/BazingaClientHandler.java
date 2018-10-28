@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author liguolin
+ * @author bazinga
  * @create 2018-10-19 11:06
  **/
 public class BazingaClientHandler extends SimpleChannelInboundHandler<String> {
