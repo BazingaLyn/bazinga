@@ -16,7 +16,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 /**
- * @author liguolin
+ * @author bazinga
  * @create 2018-10-19 11:04
  **/
 public class BazingaNettyClient {

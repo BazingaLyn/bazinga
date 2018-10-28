@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author liguolin
+ * @author bazinga
  * @create 2018-10-18 21:08
  **/
 public class BazingaServerHandler extends ChannelInboundHandlerAdapter {
@@ -25,7 +25,7 @@ public class BazingaServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         logger.info("from remote ip {} receive msg {}",ctx.channel().remoteAddress().toString(),msg);
-//        int  i = 2 / 0;
+        int  i = 2 / 0;
         ctx.pipeline().writeAndFlush(msg);
     }
 

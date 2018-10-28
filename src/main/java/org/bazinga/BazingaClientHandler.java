@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author liguolin
+ * @author bazinga
  * @create 2018-10-19 11:06
  **/
 public class BazingaClientHandler extends ChannelInboundHandlerAdapter {
@@ -16,7 +16,7 @@ public class BazingaClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         logger.info(">>>>>> BazingaClientHandler channelActive");
-        ctx.pipeline().writeAndFlush("hello world");
+        ctx.pipeline().writeAndFlush("hello netty");
     }
 
     @Override
