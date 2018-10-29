@@ -39,6 +39,7 @@ public class BazingaNettyServer {
                 protected void initChannel(SocketChannel socketChannel) throws Exception {
                     socketChannel.pipeline().addLast("decoder", new StringDecoder());
                     socketChannel.pipeline().addLast("encoder", new StringEncoder());
+                    socketChannel.pipeline().addLast(new BazingaServerHandler2());
                     socketChannel.pipeline().addLast(new BazingaServerHandler());
                 }
             });
