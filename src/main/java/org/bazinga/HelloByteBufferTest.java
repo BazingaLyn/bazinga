@@ -102,4 +102,28 @@ public class HelloByteBufferTest {
         //报错
         //asReadOnlyBuffer.put((byte)2);
     }
+
+
+    @Test
+    public void test005(){
+        ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[]{(byte)1,(byte)2});
+
+        System.out.println(byteBuffer.getClass());
+        System.out.printf("position is %s limit is %s capacity is %s\n",
+                byteBuffer.position(),
+                byteBuffer.limit(),
+                byteBuffer.capacity());
+
+        byteBuffer.flip();
+        System.out.printf("after flip position is %s limit is %s capacity is %s\n",
+                byteBuffer.position(),
+                byteBuffer.limit(),
+                byteBuffer.capacity());
+        byteBuffer.clear();
+
+        System.out.printf("after clear position is %s limit is %s capacity is %s\n",
+                byteBuffer.position(),
+                byteBuffer.limit(),
+                byteBuffer.capacity());
+    }
 }
