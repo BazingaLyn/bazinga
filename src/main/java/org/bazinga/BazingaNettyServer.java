@@ -37,10 +37,12 @@ public class BazingaNettyServer {
 
                 @Override
                 protected void initChannel(SocketChannel socketChannel) throws Exception {
-                    socketChannel.pipeline().addLast("decoder", new StringDecoder());
-                    socketChannel.pipeline().addLast("encoder", new StringEncoder());
-                    socketChannel.pipeline().addLast(new BazingaServerHandler2());
-                    socketChannel.pipeline().addLast(new BazingaServerHandler());
+                    socketChannel.pipeline().addLast(new BazingaServerOutboundHandler3());
+                    socketChannel.pipeline().addLast(new BazingaServerInboundHandler1());
+                    socketChannel.pipeline().addLast(new BazingaServerOutboundHandler2());
+                    socketChannel.pipeline().addLast(new BazingaServerInboundHandler2());
+                    socketChannel.pipeline().addLast(new BazingaServerOutboundHandler1());
+                    socketChannel.pipeline().addLast(new BazingaServerInboundHandler3());
                 }
             });
             sbs.bind(host, port).sync().addListener(future -> {
