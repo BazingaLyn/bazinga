@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
  * @author bazinga
  * @create 2018-10-18 21:08
  **/
-public class BazingaServerHandler2 extends ChannelInboundHandlerAdapter {
+public class BazingaServerInboundHandler2 extends ChannelInboundHandlerAdapter {
 
 
-    private Logger logger = LoggerFactory.getLogger(BazingaServerHandler2.class);
+    private Logger logger = LoggerFactory.getLogger(BazingaServerInboundHandler2.class);
 
 
     @Override
