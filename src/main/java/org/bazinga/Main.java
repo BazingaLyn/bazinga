@@ -1,9 +1,11 @@
 package org.bazinga;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.apache.zookeeper.CreateMode;
+
+import java.util.List;
 
 /**
  * @author liguolin
@@ -11,36 +13,31 @@ import java.lang.reflect.Proxy;
  **/
 public class Main {
 
-    public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    public static void main(String[] args) throws Exception {
 
-//        Class<?> aClass = Class.forName("org.bazinga.DemoServiceImpl");
-//
-//        Method method = aClass.getDeclaredMethod("hello",new Class[]{String.class});
-//
-//        Object o = method.invoke(aClass.newInstance(),"hello");
-//
-//        System.out.println(o.toString());
-
-        DemoService demoService = (DemoService)Proxy.newProxyInstance(DemoService.class.getClassLoader(),new Class<?>[]{DemoService.class},new JdkProxyHandler(new DemoServiceImpl()));
+        CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
+                .connectString("47.98.164.130:2181")
+                .retryPolicy(new ExponentialBackoffRetry(1000, 3, 5000))
+                .namespace("bazinga");
 
 
-        String hello = demoService.hello("hello");
-        System.out.println(hello);
+        CuratorFramework client = builder.build();
 
+        client.start();
+
+//        client.create().withMode(CreateMode.EPHEMERAL_SEQUENTIAL).forPath("/org.bazinga.service.HelloService","hello".getBytes());
+//        client.create().withMode(CreateMode.EPHEMERAL_SEQUENTIAL).forPath("/org.bazinga.service.HelloService","hello1".getBytes());
+
+        client.create().creatingParentContainersIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/service/org.bazinga.service.HelloService/11111","hello".getBytes());
+        client.create().creatingParentContainersIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/service/org.bazinga.service.HelloService/22222","hello1".getBytes());
+        //        client.create().withMode(CreateMode.EPHEMERAL).forPath("/service/org.bazinga.service.HelloService","hello1".getBytes());
+
+        List<String> strings = client.getChildren().forPath("/service/org.bazinga.service.HelloService");
+
+        strings.stream().forEach(System.out::println);
+
+        Thread.sleep(200000L);
 
     }
 
-    static class JdkProxyHandler implements InvocationHandler {
-
-        private Object target;
-
-        public JdkProxyHandler(Object target) {
-            this.target = target;
-        }
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            return method.invoke(target,args);
-        }
-    }
 }
