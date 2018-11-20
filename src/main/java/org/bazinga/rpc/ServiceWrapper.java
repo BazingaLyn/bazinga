@@ -16,5 +16,27 @@ public class ServiceWrapper<T> {
 
     private List<Method> methods;
 
+    public T getRef() {
+        return ref;
+    }
 
+    public void setRef(T ref) {
+        this.ref = ref;
+    }
+
+    public Class<T> getClazz() {
+        return clazz;
+    }
+
+    public void setClazz(Class<T> clazz) {
+        this.clazz = clazz;
+    }
+
+    public List<Method> getMethods() {
+        return methods;
+    }
+
+    public void setMethods(List<Method> methods) {
+        this.methods = methods;
+    }
 }

@@ -1,5 +1,6 @@
 package org.bazinga.registry;
 
+import org.bazinga.config.Config;
 import org.bazinga.rpc.AppRegisterInfo;
 
 /**
@@ -8,8 +9,9 @@ import org.bazinga.rpc.AppRegisterInfo;
  **/
 public interface Registry {
 
+    void init();
 
-    Registry address(String address);
+    Registry config(Config config);
 
     void register(AppRegisterInfo appRegisterInfo);
 }
