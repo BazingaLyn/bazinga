@@ -15,9 +15,11 @@ public class BazingaSimpleServer {
 
     private static String zookeeperAddress = "47.98.164.130:2181";
 
+    private static String DEFAULT_NAMESPACE = "bazinga";
+
     public static void main(String[] args) {
 
-        Registry registry = new ZookeeperRegistry(zookeeperAddress);
+        Registry registry = new ZookeeperRegistry(zookeeperAddress,DEFAULT_NAMESPACE);
 
         RpcServer rpcServer = new DefaultRpcServer(8089);
 

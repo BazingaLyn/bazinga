@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author liguolin
  * @create 2018-11-20 15:41
  **/
-public class AppRegisterInfo {
+public class AppRegisterMeta {
 
     private String applicationName;
 
@@ -15,11 +15,11 @@ public class AppRegisterInfo {
 
     private int port;
 
-    private Map<String,ServiceRegisterInfo> serviceMaps = new ConcurrentHashMap<>(16);
+    private Map<String,ServiceRegisterMeta> serviceMaps = new ConcurrentHashMap<>(16);
 
 
-    public void putSerivceRegisterInfo(String serviceName,ServiceRegisterInfo serviceRegisterInfo){
-        this.serviceMaps.putIfAbsent(serviceName,serviceRegisterInfo);
+    public void putSerivceRegisterInfo(String serviceName,ServiceRegisterMeta serviceRegisterMeta){
+        this.serviceMaps.putIfAbsent(serviceName, serviceRegisterMeta);
     }
 
     public int getPort() {
@@ -46,11 +46,11 @@ public class AppRegisterInfo {
         this.ip = ip;
     }
 
-    public Map<String, ServiceRegisterInfo> getServiceMaps() {
+    public Map<String, ServiceRegisterMeta> getServiceMaps() {
         return serviceMaps;
     }
 
-    public void setServiceMaps(Map<String, ServiceRegisterInfo> serviceMaps) {
+    public void setServiceMaps(Map<String, ServiceRegisterMeta> serviceMaps) {
         this.serviceMaps = serviceMaps;
     }
 }

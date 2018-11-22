@@ -7,7 +7,7 @@ import java.util.List;
  * @author liguolin
  * @create 2018-11-20 15:45
  **/
-public class ServiceRegisterInfo {
+public class ServiceRegisterMeta {
 
     private String address;
 

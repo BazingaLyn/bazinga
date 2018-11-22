@@ -14,11 +14,11 @@ public class DefaultConsumer implements Consumer {
 
     private RpcClient rpcClient;
 
-    private Map<String,List<ServiceRegisterInfo>> serviceRegisters = new ConcurrentHashMap<>(16);
+    private Map<String,List<ServiceRegisterMeta>> serviceRegisters = new ConcurrentHashMap<>(16);
 
 
     @Override
-    public List<ServiceRegisterInfo> subscribe(String interfaceName) {
+    public List<ServiceRegisterMeta> subscribe(String interfaceName) {
         return null;
     }
 

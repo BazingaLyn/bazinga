@@ -1,6 +1,7 @@
 package org.bazinga.subscriber;
 
-import org.bazinga.rpc.ServiceRegisterInfo;
+import org.apache.curator.framework.CuratorFramework;
+import org.bazinga.rpc.ServiceRegisterMeta;
 
 import java.util.List;
 
@@ -12,6 +13,13 @@ public class ZookeeperSubscriber implements Subscriber {
 
     private String zookeeperAddress;
 
+    private CuratorFramework client;
+
+    @Override
+    public void init() {
+
+    }
+
     @Override
     public Subscriber address(String address) {
         this.zookeeperAddress = address;
@@ -19,7 +27,7 @@ public class ZookeeperSubscriber implements Subscriber {
     }
 
     @Override
-    public List<ServiceRegisterInfo> subscribe(String interfaceName) {
+    public List<ServiceRegisterMeta> subscribe(String interfaceName) {
         return null;
     }
 }

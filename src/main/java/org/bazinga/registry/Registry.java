@@ -1,7 +1,7 @@
 package org.bazinga.registry;
 
 import org.bazinga.config.Config;
-import org.bazinga.rpc.AppRegisterInfo;
+import org.bazinga.rpc.AppRegisterMeta;
 
 /**
  * @author liguolin
@@ -13,5 +13,5 @@ public interface Registry {
 
     Registry config(Config config);
 
-    void register(AppRegisterInfo appRegisterInfo);
+    void register(AppRegisterMeta appRegisterMeta);
 }

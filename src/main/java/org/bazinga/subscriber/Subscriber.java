@@ -1,6 +1,6 @@
 package org.bazinga.subscriber;
 
-import org.bazinga.rpc.ServiceRegisterInfo;
+import org.bazinga.rpc.ServiceRegisterMeta;
 
 import java.util.List;
 
@@ -10,8 +10,10 @@ import java.util.List;
  **/
 public interface Subscriber {
 
+    void init();
+
     Subscriber address(String address);
 
-    List<ServiceRegisterInfo> subscribe(String interfaceName);
+    List<ServiceRegisterMeta> subscribe(String interfaceName);
 
 }

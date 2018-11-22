@@ -88,10 +88,10 @@ public class DefaultProvider implements Provider {
     public void init() {
 
         registry.init();
-        AppRegisterInfo appRegisterInfo = new AppRegisterInfo();
-        appRegisterInfo.setApplicationName(appName);
-        appRegisterInfo.setIp(IpUtils.getLocalIp());
-        appRegisterInfo.setPort(port);
+        AppRegisterMeta appRegisterMeta = new AppRegisterMeta();
+        appRegisterMeta.setApplicationName(appName);
+        appRegisterMeta.setIp(IpUtils.getLocalIp());
+        appRegisterMeta.setPort(port);
 
         Set<String> serviceNames = serviceWrapperMap.keySet();
 
@@ -99,15 +99,15 @@ public class DefaultProvider implements Provider {
 
             ServiceWrapper serviceWrapper = serviceWrapperMap.get(serviceName);
 
-            ServiceRegisterInfo serviceRegisterInfo =  new ServiceRegisterInfo();
-            serviceRegisterInfo.setAddress(String.format("%s:%s",appRegisterInfo.getIp(),appRegisterInfo.getPort()));
+            ServiceRegisterMeta serviceRegisterMeta =  new ServiceRegisterMeta();
+            serviceRegisterMeta.setAddress(String.format("%s:%s", appRegisterMeta.getIp(), appRegisterMeta.getPort()));
 
-            serviceRegisterInfo.setInterfaceName(serviceName);
-            serviceRegisterInfo.setMethodList(serviceWrapper.getMethods());
-            appRegisterInfo.putSerivceRegisterInfo(serviceName,serviceRegisterInfo);
+            serviceRegisterMeta.setInterfaceName(serviceName);
+            serviceRegisterMeta.setMethodList(serviceWrapper.getMethods());
+            appRegisterMeta.putSerivceRegisterInfo(serviceName, serviceRegisterMeta);
 
         }
-        registry.register(appRegisterInfo);
+        registry.register(appRegisterMeta);
         rpcServer.init();
 
     }

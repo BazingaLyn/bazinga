@@ -10,7 +10,7 @@ import java.util.List;
  **/
 public interface Consumer {
 
-    List<ServiceRegisterInfo> subscribe(String interfaceName);
+    List<ServiceRegisterMeta> subscribe(String interfaceName);
 
     Consumer rpcClient(RpcClient rpcClient);
 
