@@ -6,7 +6,7 @@ package org.bazinga.protocol;
  **/
 public class BazingaTransferProtocol {
 
-    /** 1 老师 2 学生  **/
+    /** 1 请求 2响应  **/
     private byte type;
 
     private int length;

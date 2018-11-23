@@ -2,35 +2,39 @@ package org.bazinga;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.timeout.IdleState;
-import io.netty.handler.timeout.IdleStateEvent;
-import org.bazinga.domain.Student;
-import org.bazinga.domain.Teacher;
+import io.netty.channel.SimpleChannelInboundHandler;
+import org.bazinga.domain.Response;
+import org.bazinga.domain.ResponseFuture;
+import org.bazinga.rpc.NettyRpcClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
+
 /**
  * @author liguolin
- * @create 2018-10-19 11:06
+ * @create 2018-11-22 13:51:53
  **/
-public class BazingaClientHandler extends ChannelInboundHandlerAdapter {
+public class BazingaClientHandler extends SimpleChannelInboundHandler<Response> {
 
     private Logger logger = LoggerFactory.getLogger(BazingaClientHandler.class);
 
+    private NettyRpcClient nettyRpcClient;
 
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        logger.info(">>>>>> BazingaClientHandler channelActive");
+    public BazingaClientHandler(NettyRpcClient nettyRpcClient) {
 
-        for (int i = 0; i < 10; i++) {
+        this.nettyRpcClient = nettyRpcClient;
 
-            ctx.pipeline().writeAndFlush(new Teacher(i,"Lyncc"+i,"english"));
-            ctx.pipeline().writeAndFlush(new Student("student Lyncc"+i,"sleep",90+i));
-        }
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        logger.info(">>>>>> receive msg  {} from server",msg);
+    protected void channelRead0(ChannelHandlerContext ctx, Response msg) throws Exception {
+
+        logger.info("hello return invoke..... {}",msg);
+
+        Map<Long, ResponseFuture> nettyRpcClientMaps = nettyRpcClient.getMaps();
+        ResponseFuture responseFuture = nettyRpcClientMaps.get(msg.getId());
+        responseFuture.putResponse(msg);
+
     }
 }

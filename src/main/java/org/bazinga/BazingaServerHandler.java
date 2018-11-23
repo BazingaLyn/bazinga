@@ -1,31 +1,63 @@
 package org.bazinga;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import org.bazinga.domain.Request;
+import org.bazinga.domain.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+
 /**
  * @author liguolin
- * @create 2018-10-18 21:08
- **/
-public class BazingaServerHandler extends ChannelInboundHandlerAdapter {
-
+ * 2018-11-22 13:49:33
+ */
+@ChannelHandler.Sharable
+public class BazingaServerHandler extends SimpleChannelInboundHandler<Request> {
 
     private Logger logger = LoggerFactory.getLogger(BazingaServerHandler.class);
 
-    private int count = 0;
+
+    private Map<String,Object> serviceContainer = new ConcurrentHashMap<>();
+
+    public void publishLocalService(Object... objs){
+        for (int i = 0; i < objs.length; i++) {
+            Object obj = objs[i];
+            String interfaceName = obj.getClass().getInterfaces()[0].getName();
+            serviceContainer.put(interfaceName,obj);
+        }
+    }
+
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        logger.info("from remote ip {} receive msg {} receive count is {}",ctx.channel().remoteAddress().toString(),msg,++count);
+    protected void channelRead0(ChannelHandlerContext ctx, Request msg) throws Exception {
+
+        logger.info("hello invoke......");
+
+        Object obj = serviceContainer.get(msg.getInterfaceName());
+
+        Class clz = Class.forName(msg.getInterfaceName());
+
+        Method method = clz.getMethod(msg.getMethodName(), String.class);
+        Object invoke = method.invoke(obj, "bazinga");
+
+
+        Response response = new Response();
+        response.setId(msg.getId());
+        response.setResult(invoke);
+
+        System.out.println(response);
+
+        ctx.channel().writeAndFlush(response);
 
     }
 
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.error(">>>>>>>>>>> exceptionCaught ",cause);
-    }
 }

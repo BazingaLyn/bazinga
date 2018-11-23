@@ -1,10 +1,7 @@
 package org.bazinga;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -24,39 +21,45 @@ import java.util.concurrent.TimeUnit;
  **/
 public class BazingaNettyClient {
 
-    private final static Logger logger = LoggerFactory.getLogger(BazingaNettyClient.class);
 
-    static final String HOST = "127.0.0.1";
+    private Bootstrap bootstrap;
 
-    static final int PORT = 8082;
-
-    public static void main(String[] args) {
-        connect();
+    public BazingaNettyClient(ChannelInboundHandler channelInboundHandler){
+        init(channelInboundHandler);
     }
 
-    private static void connect() {
-        EventLoopGroup group = new NioEventLoopGroup();
-        Bootstrap b = new Bootstrap();
-        try{
-            b.group(group)
-                    .channel(NioSocketChannel.class).handler(new ChannelInitializer<SocketChannel>() {
-                @Override
-                public void initChannel(SocketChannel ch) throws Exception {
-                    ChannelPipeline p = ch.pipeline();
-                    p.addLast("bazingaSimpleCodec", new BazingaSimpleCodec());
-                    p.addLast(new BazingaClientHandler());
-                }
-            });
-            SocketAddress socketAddress =  new InetSocketAddress(HOST, PORT);
-            b.connect(socketAddress).sync().addListener(future -> {
-                if(future.isSuccess()){
-                    logger.info(">>>>>>>>>>>BazingaNettyClient connect {}:{} successfully",HOST,PORT);
-                }else{
-                    logger.error(">>>>>>>>>>>BazingaNettyClient connect {}:{} fail need reconnect",HOST,PORT);
-                }
-            });
-        }catch (Exception e){
-            group.shutdownGracefully();
-        }
+    public void init(ChannelInboundHandler channelInboundHandler){
+
+        bootstrap = new Bootstrap().group(new NioEventLoopGroup()).channel(NioSocketChannel.class).handler(new ChannelInitializer<SocketChannel>() {
+            @Override
+            public void initChannel(SocketChannel ch) throws Exception {
+                ChannelPipeline p = ch.pipeline();
+                p.addLast("bazingaSimpleCodec", new BazingaSimpleCodec());
+                p.addLast(channelInboundHandler);
+
+            }
+        });
     }
+
+
+    public Channel doCreateChannel(String address){
+        ChannelFuture channelFuture = bootstrap.connect(string2SocketAddress(address));
+        return channelFuture.channel();
+    }
+
+
+    public static SocketAddress string2SocketAddress(String addr) {
+        String[] s = addr.split(":");
+        InetSocketAddress isa = new InetSocketAddress(s[0], Integer.valueOf(s[1]));
+        return isa;
+    }
+
+
+
+
+
+
+
+
+
 }
