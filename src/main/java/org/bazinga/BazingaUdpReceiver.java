@@ -14,7 +14,7 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 public class BazingaUdpReceiver {
 
 
-    //Reciever的端口
+    private static int S_PORT = 1111;
     private static int R_PORT = 2222;
 
 
@@ -28,6 +28,7 @@ public class BazingaUdpReceiver {
                 .handler(new ChannelInitializer<NioDatagramChannel>() {
                     @Override
                     protected void initChannel(NioDatagramChannel ch) throws Exception {
+                        ch.pipeline().addLast(new BazingaUdpEncoder(S_PORT));
                         ch.pipeline().addLast(new BazingaUdpReceiverHandler());
                     }
                 });

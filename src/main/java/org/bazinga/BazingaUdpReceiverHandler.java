@@ -22,6 +22,6 @@ public class BazingaUdpReceiverHandler extends SimpleChannelInboundHandler<Datag
         final ByteBuf buf = msg.content();
         String _msg = buf.toString(CharsetUtil.UTF_8);
         logger.info("BazingaUdpReceiver {}",_msg);
-
+        ctx.writeAndFlush(_msg);
     }
 }
