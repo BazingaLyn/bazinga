@@ -11,7 +11,7 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
  * @author liguolin
  * @create 2018-11-28 9:46
  **/
-public class BazingaUdpReceiver {
+public class BazingaUdpServer {
 
 
     private static int S_PORT = 1111;
@@ -29,7 +29,7 @@ public class BazingaUdpReceiver {
                     @Override
                     protected void initChannel(NioDatagramChannel ch) throws Exception {
                         ch.pipeline().addLast(new BazingaUdpEncoder(S_PORT));
-                        ch.pipeline().addLast(new BazingaUdpReceiverHandler());
+                        ch.pipeline().addLast(new BazingaUdpServerHandler());
                     }
                 });
         try {

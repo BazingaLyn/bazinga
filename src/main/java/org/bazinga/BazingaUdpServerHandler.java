@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
  * @author liguolin
  * @create 2018-11-28 9:53
  **/
-public class BazingaUdpReceiverHandler extends SimpleChannelInboundHandler<DatagramPacket> {
+public class BazingaUdpServerHandler extends SimpleChannelInboundHandler<DatagramPacket> {
 
-    private static final Logger logger = LoggerFactory.getLogger(BazingaUdpReceiverHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(BazingaUdpServerHandler.class);
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, DatagramPacket msg) throws Exception {

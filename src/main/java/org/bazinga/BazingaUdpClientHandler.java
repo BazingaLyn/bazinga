@@ -12,7 +12,7 @@ import java.util.List;
  * @author liguolin
  * @create 2018-11-28 18:37
  **/
-public class BazingaUdpSenderHandler extends MessageToMessageDecoder<DatagramPacket> {
+public class BazingaUdpClientHandler extends MessageToMessageDecoder<DatagramPacket> {
 
 
     @Override
