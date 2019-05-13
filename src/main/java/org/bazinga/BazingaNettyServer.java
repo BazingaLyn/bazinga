@@ -9,6 +9,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +31,7 @@ public class BazingaNettyServer {
             ServerBootstrap sbs = new ServerBootstrap();
             sbs.group(bossGroup,workerGroup);
             sbs.channel(NioServerSocketChannel.class);
+            sbs.handler(new BazingaChannelHandler());
             sbs.childHandler(new ChannelInitializer<SocketChannel>() {
 
                 @Override
