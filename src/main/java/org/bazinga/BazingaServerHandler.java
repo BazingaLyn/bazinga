@@ -25,7 +25,6 @@ public class BazingaServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         logger.info("from remote ip {} receive msg {}",ctx.channel().remoteAddress().toString(),msg);
-        int  i = 2 / 0;
         ctx.pipeline().writeAndFlush(msg);
     }
 
